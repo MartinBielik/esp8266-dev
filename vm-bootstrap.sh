@@ -7,7 +7,10 @@ set -ex
 sudo apt-get update
 sudo apt-get -y install git autoconf build-essential \
      gperf bison flex texinfo libtool libncurses5-dev \
-     wget gawk libc6-dev-amd64 python-serial libexpat-dev unzip
+     wget gawk libc6-dev-amd64 python-pip libexpat-dev unzip
+# install pyserial
+sudo pip install pyserial
+
 if [ ! -d /opt/Espressif ]; then
   sudo mkdir /opt/Espressif
 fi
