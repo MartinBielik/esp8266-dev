@@ -18,19 +18,17 @@
 #include "espmissingincludes.h"
 
 #define LEDGPIO 1
-#define RRELEGPIO 5
+#define RELGPIO 5
 #define BTNGPIO 0
 
 static ETSTimer resetBtntimer;
 
-void ICACHE_FLASH_ATTR ioReleLed(int ena) {
+void ICACHE_FLASH_ATTR ioRelayLed(int ena) {
 	//gpio_output_set is overkill. ToDo: use better mactos
 	if (ena) {
-		gpio_output_set((1<<RRELEGPIO), 0, (1<<RRELEGPIO), 0);
-		gpio_output_set((1<<LEDGPIO), 0, (1<<LEDGPIO), 0);
+		gpio_output_set((1<<RELGPIO)|(1<<LEDGPIO), 0, (1<<RELGPIO)|(1<<LEDGPIO), 0);
 	} else {
-		gpio_output_set(0, (1<<RRELEGPIO), (1<<RRELEGPIO), 0);
-		gpio_output_set(0, (1<<LEDGPIO), (1<<LEDGPIO), 0);
+		gpio_output_set(0, (1<<RELGPIO)|(1<<LEDGPIO), (1<<RELGPIO)|(1<<LEDGPIO), 0);
 	}
 }
 
@@ -50,9 +48,10 @@ static void ICACHE_FLASH_ATTR resetBtnTimerCb(void *arg) {
 }
 
 void ioInit() {
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2);
+	//todo change. PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO1_U, FUNC_GPIO2);
+	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO5_U, FUNC_GPIO2);
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO0_U, FUNC_GPIO0);
-	gpio_output_set(0, 0, (1<<LEDGPIO), (1<<BTNGPIO));
+	gpio_output_set(0, 0, (1<<RELGPIO)|(1<<LEDGPIO), (1<<BTNGPIO));
 	os_timer_disarm(&resetBtntimer);
 	os_timer_setfn(&resetBtntimer, resetBtnTimerCb, NULL);
 	os_timer_arm(&resetBtntimer, 500, 1);

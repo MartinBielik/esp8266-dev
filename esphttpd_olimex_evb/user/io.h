@@ -1,2 +1,2 @@
-void ICACHE_FLASH_ATTR ioReleLed(int ena);
+void ICACHE_FLASH_ATTR ioRelayLed(int ena);
 void ioInit(void);
